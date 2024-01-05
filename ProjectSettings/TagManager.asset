@@ -4,12 +4,14 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Black King
-  - Black Queen
   - Black Pawn
-  - Black Knight
-  - Black Bishop
-  - Black Rook
+  - King
+  - Queen
+  - White Pawn
+  - Knight
+  - Bishop
+  - Rook
+  - White
   layers:
   - Default
   - TransparentFX

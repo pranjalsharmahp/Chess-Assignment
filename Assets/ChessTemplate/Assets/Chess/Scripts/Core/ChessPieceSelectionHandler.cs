@@ -8,6 +8,8 @@ public class ChessPieceSelectionHandler : MonoBehaviour
     public Camera cameraa;
     public ChessPlayerPlacementHandler chessPlayerPlacementHandler;
     private const int chessBoardSize=8;
+    private const string playerTile="B";
+    private const string enemyTile="W";
 
     // Update is called once per frame
     void Update()
@@ -37,20 +39,20 @@ public class ChessPieceSelectionHandler : MonoBehaviour
             case "Black Pawn":
                 HighlightBlackPawnMoves();
                 break;
-            case "Black Rook":
+            case "Rook":
                 HighlightRookMoves();
                 break;
-            case "Black Bishop":
+            case "Bishop":
                 HighlightBishopMoves();
                 break;
-            case "Black Knight":
+            case "Knight":
                 HighlightKnightMoves();
                 break;
-            case "Black Queen":
+            case "Queen":
                 HighlightRookMoves();
                 HighlightBishopMoves();
                 break;
-            case "Black King":
+            case "King":
                 HighlightKingMoves();
                 break;
         }
@@ -59,17 +61,23 @@ public class ChessPieceSelectionHandler : MonoBehaviour
     void HighlightBlackPawnMoves(){
         int currentRow=chessPlayerPlacementHandler.row;
         int currentColumn=chessPlayerPlacementHandler.column;
-        if(currentRow==1 && ChessBoardPlacementHandler.Instance._occupiedTiles[2,currentColumn]!="B"){
-            ChessBoardPlacementHandler.Instance.Highlight(2,currentColumn);
-            if(ChessBoardPlacementHandler.Instance._occupiedTiles[3,currentColumn]!="B"){
-                ChessBoardPlacementHandler.Instance.Highlight(3,currentColumn);
-            }
+        //Front Highlight
+        if(!isOccupiedByPlayer(currentRow+1,currentColumn) && !isOccupiedByEnemy(currentRow+1,currentColumn)){
+            Highlight(currentRow+1,currentColumn);
         }
-        else{
-            if(ChessBoardPlacementHandler.Instance._occupiedTiles[currentRow+1,currentColumn]!="B"){
-                ChessBoardPlacementHandler.Instance.Highlight(currentRow+1,currentColumn);
-            }
+        //Highlight if there is a enemy on the left
+        if(isOccupiedByEnemy(currentRow+1,currentColumn-1)){
+            Highlight(currentRow+1,currentColumn-1);
         }
+        //Highlight if there is a enemy on the right
+        if(isOccupiedByEnemy(currentRow+1,currentColumn+1)){
+            Highlight(currentRow+1,currentColumn+1);
+        }
+        //Highlight the 2nd row too if the pawn is on the default position
+        if(currentRow==1 && !isOccupiedByEnemy(currentRow+1,currentColumn) && !isOccupiedByPlayer(currentRow+1,currentColumn)){
+            Highlight(currentRow+2,currentColumn);
+        }
+        
     }
 
     void HighlightRookMoves(){
@@ -89,12 +97,19 @@ public class ChessPieceSelectionHandler : MonoBehaviour
     void HighlightKingMoves(){
             int currentRow=chessPlayerPlacementHandler.row;
             int currentColumn=chessPlayerPlacementHandler.column;
-            int[,] kingMoves={{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
+            int[,] kingMoves={{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}}; //All the possible moves a king can make
             for(int i=0;i<kingMoves.GetLength(0);i++){
                 int newRow=currentRow+kingMoves[i,0];
                 int newColumn=currentColumn+kingMoves[i,1];
-                if(ChessBoardPlacementHandler.Instance._occupiedTiles[newRow,newColumn]!="B"){
-                    ChessBoardPlacementHandler.Instance.Highlight(newRow,newColumn);
+                if(!isOccupiedByPlayer(newRow,newColumn)){
+                    if(isOccupiedByEnemy(newRow,newColumn)){
+                        Highlight(newRow,newColumn);
+                        break;
+                    }
+                    else{
+                        Highlight(newRow,newColumn);
+                    }
+                    
                 }
             }
     }
@@ -102,12 +117,15 @@ public class ChessPieceSelectionHandler : MonoBehaviour
     void HighlightKnightMoves(){
         int currentRow=chessPlayerPlacementHandler.row;
             int currentColumn=chessPlayerPlacementHandler.column;
-            int[,] knightMoves={{2,1},{2,-1},{1,2},{1,-2},{-2,1},{-2,-1},{-1,2},{-1,-2}};
+            int[,] knightMoves={{2,1},{2,-1},{1,2},{1,-2},{-2,1},{-2,-1},{-1,2},{-1,-2}}; // All the possible moves a knight can make
             for(int i=0;i<knightMoves.GetLength(0);i++){
                 int newRow=currentRow+knightMoves[i,0];
                 int newColumn=currentColumn+knightMoves[i,1];
-                if(newRow>=0 && newRow<8 && newColumn>=0 && newColumn<8 && ChessBoardPlacementHandler.Instance._occupiedTiles[newRow,newColumn]!="B"){
-                    ChessBoardPlacementHandler.Instance.Highlight(newRow,newColumn);
+                if(isValidMove(newRow,newColumn) && !isOccupiedByPlayer(newRow,newColumn)){
+                    if(!isOccupiedByPlayer(newRow,newColumn)){
+                        Highlight(newRow,newColumn);
+                    }
+                    Highlight(newRow,newColumn);
                 }
             }
     }
@@ -115,17 +133,51 @@ public class ChessPieceSelectionHandler : MonoBehaviour
     void HighlightDirectionalMoves(int rowIncrement,int columnIncrement){
         int currentRow=chessPlayerPlacementHandler.row;
         int currentColumn=chessPlayerPlacementHandler.column;
-        for(int i=currentRow+rowIncrement,j=currentColumn+columnIncrement; (i>=0 && i<chessBoardSize && j>=0 && j< chessBoardSize); i+=rowIncrement,j+=columnIncrement){
+        for(int i=currentRow+rowIncrement,j=currentColumn+columnIncrement; (isValidMove(i,j)); i+=rowIncrement,j+=columnIncrement){
             if(!TryHighlightPosition(i,j)) break;
         }
     }
 
     bool TryHighlightPosition(int row,int column){
-        if(ChessBoardPlacementHandler.Instance._occupiedTiles[row,column]!="B"){
-            ChessBoardPlacementHandler.Instance.Highlight(row,column);
+        if(!isOccupiedByPlayer(row,column)){
+            //Check if we can take the enemy pieces and highlight them
+            if(ChessBoardPlacementHandler.Instance._occupiedTiles[row,column]==enemyTile){
+                Highlight(row,column);
+                return false;
+            }
+            Highlight(row,column);
             return true;
         }
         return false;
+    }
+
+    bool isOccupiedByPlayer(int row,int column){
+        if(ChessBoardPlacementHandler.Instance._occupiedTiles[row,column]==playerTile){
+            return true;
+        }
+        return false;
+    }
+
+    bool isOccupiedByEnemy(int row,int column){
+        if(isValidMove(row,column+1) && isValidMove(row,column-1)){
+            if(ChessBoardPlacementHandler.Instance._occupiedTiles[row,column]==enemyTile){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool isValidMove(int row,int column){
+        if(row>=0 && row<8 && column>=0 && column<8){
+            return true;
+        }
+        return false;
+    }
+
+    void Highlight(int row, int column){
+        if(isValidMove(row,column)){
+            ChessBoardPlacementHandler.Instance.Highlight(row,column);
+        }
     }
 
 }
