@@ -7,11 +7,11 @@ public sealed class ChessBoardPlacementHandler : MonoBehaviour {
     [SerializeField] private GameObject[] _rowsArray;
     [SerializeField] private GameObject _highlightPrefab;
     private GameObject[,] _chessBoard;
-    public string[,] _occupiedTiles;
+    public GameObject[,] _chessPiecePosition;
     internal static ChessBoardPlacementHandler Instance;
 
     private void Awake() {
-        _occupiedTiles=new string[8,8];
+        _chessPiecePosition=new GameObject[8,8];
         Instance = this;
         GenerateArray();
     }

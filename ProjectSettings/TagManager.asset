@@ -12,6 +12,8 @@ TagManager:
   - Bishop
   - Rook
   - White
+  - Black
+  - Highlighter
   layers:
   - Default
   - TransparentFX
