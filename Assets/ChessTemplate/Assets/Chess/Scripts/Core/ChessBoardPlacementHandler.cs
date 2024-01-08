@@ -56,6 +56,7 @@ public sealed class ChessBoardPlacementHandler : MonoBehaviour {
             }
         }
     }
+    
 
 
 
