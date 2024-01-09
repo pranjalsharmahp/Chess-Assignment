@@ -106,11 +106,11 @@ public class ChessPieceSelectionHandler : MonoBehaviour
             Highlight(currentRow+1,currentColumn);
         }
         //Highlight if there is a enemy on the left
-        if(isOccupiedByEnemy(currentRow+1,currentColumn-1)){
+        if(isValidMove(currentRow+1,currentColumn-1) && isOccupiedByEnemy(currentRow+1,currentColumn-1)){
             Highlight(currentRow+1,currentColumn-1);
         }
         //Highlight if there is a enemy on the right
-        if(isOccupiedByEnemy(currentRow+1,currentColumn+1)){
+        if(isValidMove(currentRow+1,currentColumn+1) && isOccupiedByEnemy(currentRow+1,currentColumn+1)){
             Highlight(currentRow+1,currentColumn+1);
         }
         //Highlight the 2nd row too if the pawn is on the default position
@@ -127,11 +127,11 @@ public class ChessPieceSelectionHandler : MonoBehaviour
             Highlight(currentRow-1,currentColumn);
         }
         //Highlight if there is a enemy on the left
-        if(isOccupiedByEnemy(currentRow-1,currentColumn-1)){
+        if(isValidMove(currentRow-1,currentColumn-1) && isOccupiedByEnemy(currentRow-1,currentColumn-1)){
             Highlight(currentRow-1,currentColumn-1);
         }
         //Highlight if there is a enemy on the right
-        if(isOccupiedByEnemy(currentRow-1,currentColumn+1)){
+        if(isValidMove(currentRow-1,currentColumn+1) && isOccupiedByEnemy(currentRow-1,currentColumn+1)){
             Highlight(currentRow-1,currentColumn+1);
         }
         //Highlight the 2nd row too if the pawn is on the default position
