@@ -101,40 +101,20 @@ public class ChessPieceSelectionHandler : MonoBehaviour
         int currentRow=chessPlayerPlacementHandler.row;
         int currentColumn=chessPlayerPlacementHandler.column;
         //Front Highlight
-        if(!isOccupiedByPlayer(currentRow+1,currentColumn) && !isOccupiedByEnemy(currentRow+1,currentColumn)){
-            if(!CheckHandler.checkHandlerInstance.iskingincheck){
-                Highlight(currentRow+1,currentColumn);
-            }
-            else{
-                MovesRestricter(currentRow+1,currentColumn);
-            }
+        if(!isOccupiedByPlayer(currentRow-1,currentColumn) && !isOccupiedByEnemy(currentRow-1,currentColumn)){
+                MovesRestricter(currentRow-1,currentColumn);
         }
         //Highlight if there is a enemy on the left
-        if(isValidMove(currentRow+1,currentColumn-1) && isOccupiedByEnemy(currentRow+1,currentColumn-1)){
-            if(!CheckHandler.checkHandlerInstance.iskingincheck){
-                Highlight(currentRow+1,currentColumn-1);
-            }
-            else{
-                MovesRestricter(currentRow+1,currentColumn-1);
-            }
+        if(isValidMove(currentRow-1,currentColumn-1) && isOccupiedByEnemy(currentRow-1,currentColumn-1)){
+                MovesRestricter(currentRow-1,currentColumn-1);
         }
         //Highlight if there is a enemy on the right
-        if(isValidMove(currentRow+1,currentColumn+1) && isOccupiedByEnemy(currentRow+1,currentColumn+1)){
-            if(!CheckHandler.checkHandlerInstance.iskingincheck){
-                Highlight(currentRow+1,currentColumn+1);
-            }
-            else{
-                MovesRestricter(currentRow+1,currentColumn+1);
-            }
+        if(isValidMove(currentRow-1,currentColumn+1) && isOccupiedByEnemy(currentRow-1,currentColumn+1)){
+                MovesRestricter(currentRow-1,currentColumn+1);
         }
         //Highlight the 2nd row too if the pawn is on the default position
-        if(currentRow==1 && !isOccupiedByEnemy(currentRow+1,currentColumn) && !isOccupiedByPlayer(currentRow+1,currentColumn) && !isOccupiedByPlayer(currentRow+2,currentColumn) && !isOccupiedByEnemy(currentRow+2,currentColumn)){
-            if(!CheckHandler.checkHandlerInstance.iskingincheck){
-                Highlight(currentRow+2,currentColumn);
-            }
-            else{
-                MovesRestricter(currentRow+2,currentColumn);
-            }
+        if(currentRow==6 && !isOccupiedByEnemy(currentRow-1,currentColumn) && !isOccupiedByPlayer(currentRow-1,currentColumn) && !isOccupiedByPlayer(currentRow-2,currentColumn) && !isOccupiedByEnemy(currentRow-2,currentColumn)){
+                MovesRestricter(currentRow-2,currentColumn);
         }
         
     }
@@ -142,40 +122,20 @@ public class ChessPieceSelectionHandler : MonoBehaviour
         int currentRow=chessPlayerPlacementHandler.row;
         int currentColumn=chessPlayerPlacementHandler.column;
         //Front Highlight
-        if(!isOccupiedByPlayer(currentRow-1,currentColumn) && !isOccupiedByEnemy(currentRow-1,currentColumn)){
-            if(!CheckHandler.checkHandlerInstance.iskingincheck){
-                Highlight(currentRow-1,currentColumn);
-            }
-            else{
-                MovesRestricter(currentRow-1,currentColumn);
-            }
+        if(!isOccupiedByPlayer(currentRow+1,currentColumn) && !isOccupiedByEnemy(currentRow+1,currentColumn)){
+            MovesRestricter(currentRow+1,currentColumn);
         }
         //Highlight if there is a enemy on the left
-        if(isValidMove(currentRow-1,currentColumn-1) && isOccupiedByEnemy(currentRow-1,currentColumn-1)){
-            if(!CheckHandler.checkHandlerInstance.iskingincheck){
-                Highlight(currentRow-1,currentColumn-1);
-            }
-            else{
-                MovesRestricter(currentRow-1,currentColumn-1);
-            }
+        if(isValidMove(currentRow+1,currentColumn-1) && isOccupiedByEnemy(currentRow+1,currentColumn-1)){
+                MovesRestricter(currentRow+1,currentColumn-1);
         }
         //Highlight if there is a enemy on the right
-        if(isValidMove(currentRow-1,currentColumn+1) && isOccupiedByEnemy(currentRow-1,currentColumn+1)){
-            if(!CheckHandler.checkHandlerInstance.iskingincheck){
-                Highlight(currentRow-1,currentColumn+1);
-            }
-            else{
-                MovesRestricter(currentRow-1,currentColumn  +1);
-            }
+        if(isValidMove(currentRow+1,currentColumn+1) && isOccupiedByEnemy(currentRow+1,currentColumn+1)){
+                MovesRestricter(currentRow+1,currentColumn  +1);
         }
         //Highlight the 2nd row too if the pawn is on the default position
-        if(currentRow==6 && !isOccupiedByEnemy(currentRow-1,currentColumn) && !isOccupiedByPlayer(currentRow-1,currentColumn) && !isOccupiedByPlayer(currentRow-2,currentColumn) && !isOccupiedByEnemy(currentRow-2,currentColumn)){
-           if(!CheckHandler.checkHandlerInstance.iskingincheck){
-                Highlight(currentRow-2,currentColumn);
-            }
-            else{
-                MovesRestricter(currentRow-2,currentColumn);
-            }
+        if(currentRow==1 && !isOccupiedByEnemy(currentRow+1,currentColumn) && !isOccupiedByPlayer(currentRow+1,currentColumn) && !isOccupiedByPlayer(currentRow+2,currentColumn) && !isOccupiedByEnemy(currentRow+2,currentColumn)){
+                MovesRestricter(currentRow+2,currentColumn);
         }
     }
 
@@ -215,10 +175,7 @@ public class ChessPieceSelectionHandler : MonoBehaviour
             for(int i=0;i<knightMoves.GetLength(0);i++){
                 int newRow=currentRow+knightMoves[i,0];
                 int newColumn=currentColumn+knightMoves[i,1];
-                if(isValidMove(newRow,newColumn) && !isOccupiedByPlayer(newRow,newColumn) && !CheckHandler.checkHandlerInstance.IsKingInCheck()){
-                    Highlight(newRow,newColumn);
-                }
-                if(isValidMove(newRow,newColumn) && !isOccupiedByPlayer(newRow,newColumn) && CheckHandler.checkHandlerInstance.IsKingInCheck()){
+                if(isValidMove(newRow,newColumn) && !isOccupiedByPlayer(newRow,newColumn)){
                     MovesRestricter(newRow,newColumn);
                 }
             }
