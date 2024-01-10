@@ -154,6 +154,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraa: {fileID: 519420031}
   chessPlayerPlacementHandler: {fileID: 0}
+  playerTile: White
+  enemyTile: Black
+  playerTurn: 1
+  isBlackTurn: 0
 --- !u!4 &2040582
 Transform:
   m_ObjectHideFlags: 0
@@ -1675,6 +1679,54 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.771, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &317059092
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 317059094}
+  - component: {fileID: 317059093}
+  m_Layer: 0
+  m_Name: CheckHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &317059093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317059092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abab6d96c6a704f08a8c30da0b921ef6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kingRow: 7
+  kingColumn: 4
+  chessPieceSelectionHandler: {fileID: 0}
+  iskingincheck: 0
+--- !u!4 &317059094
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317059092}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.6049174, y: -2.1203206, z: 0.19265111}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &348273156
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7803,3 +7855,4 @@ SceneRoots:
   - {fileID: 2113069873}
   - {fileID: 2040582}
   - {fileID: 1571983915}
+  - {fileID: 317059094}

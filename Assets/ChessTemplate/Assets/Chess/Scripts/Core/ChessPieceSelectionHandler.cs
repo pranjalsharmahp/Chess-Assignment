@@ -9,29 +9,22 @@ public class ChessPieceSelectionHandler : MonoBehaviour
     public Camera cameraa;
     public ChessPlayerPlacementHandler chessPlayerPlacementHandler;
     private const int chessBoardSize=8;
-    private string playerTile="Black";
-    private string enemyTile="White";
-    private int playerTurn=1;
-    private bool isBlackTurn;
+    public string playerTile="White";
+    public string enemyTile="Black";
+    public int playerTurn=1;
+    public bool isBlackTurn;
+    internal static ChessPieceSelectionHandler Instance;
 
     void Start(){
         isBlackTurn=false;
+        Instance=this;
     }
 
     // Update is called once per frame
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Mouse0)){
-            if(playerTurn%2==0){
-                isBlackTurn=true;
-                playerTile="Black";
-                enemyTile="White";
-            }
-            else{
-                isBlackTurn=false;
-                playerTile="White";
-                enemyTile="Black";
-            }
+            
             SelectPiece();
             
         }
@@ -53,7 +46,7 @@ public class ChessPieceSelectionHandler : MonoBehaviour
             
                 Debug.Log("hit");
             }
-            else{
+            if(objectHit.tag=="Highlighter"){
                 ChessBoardPlacementHandler.Instance.ClearHighlights();
                 int highlightRow=Int32.Parse(new string(objectHit.transform.parent.gameObject.transform.parent.gameObject.name[5],1)) - 1;
                 int highlightColumn=Int32.Parse(objectHit.transform.parent.gameObject.name);
@@ -178,15 +171,12 @@ public class ChessPieceSelectionHandler : MonoBehaviour
 
     void HighlightKnightMoves(){
         int currentRow=chessPlayerPlacementHandler.row;
-            int currentColumn=chessPlayerPlacementHandler.column;
-            int[,] knightMoves={{2,1},{2,-1},{1,2},{1,-2},{-2,1},{-2,-1},{-1,2},{-1,-2}}; // All the possible moves a knight can make
+        int currentColumn=chessPlayerPlacementHandler.column;
+        int[,] knightMoves={{2,1},{2,-1},{1,2},{1,-2},{-2,1},{-2,-1},{-1,2},{-1,-2}}; // All the possible moves a knight can make
             for(int i=0;i<knightMoves.GetLength(0);i++){
                 int newRow=currentRow+knightMoves[i,0];
                 int newColumn=currentColumn+knightMoves[i,1];
                 if(isValidMove(newRow,newColumn) && !isOccupiedByPlayer(newRow,newColumn)){
-                    if(!isOccupiedByPlayer(newRow,newColumn)){
-                        Highlight(newRow,newColumn);
-                    }
                     Highlight(newRow,newColumn);
                 }
             }
@@ -213,7 +203,7 @@ public class ChessPieceSelectionHandler : MonoBehaviour
         return false;
     }
 
-    bool isOccupiedByPlayer(int row,int column){
+    public bool isOccupiedByPlayer(int row,int column){
         if(ChessBoardPlacementHandler.Instance._chessPiecePosition[row,column]!=null && ChessBoardPlacementHandler.Instance._chessPiecePosition[row,column].tag==playerTile){
             return true;
         }
@@ -239,6 +229,8 @@ public class ChessPieceSelectionHandler : MonoBehaviour
             ChessBoardPlacementHandler.Instance.Highlight(row,column);
         }
     }
+
+    
 
 }
 
