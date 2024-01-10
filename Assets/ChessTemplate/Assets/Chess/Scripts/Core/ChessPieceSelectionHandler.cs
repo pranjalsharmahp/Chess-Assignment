@@ -14,6 +14,7 @@ public class ChessPieceSelectionHandler : MonoBehaviour
     public int playerTurn=1;
     public bool isBlackTurn;
     internal static ChessPieceSelectionHandler Instance;
+    public GameObject temp;
 
     void Start(){
         isBlackTurn=false;
@@ -38,9 +39,11 @@ public class ChessPieceSelectionHandler : MonoBehaviour
             if(objectHit.tag!="Highlighter"){
                 ChessBoardPlacementHandler.Instance.ClearHighlights();
                 if(isBlackTurn && objectHit.tag=="Black"){
+                    temp=hit.transform.gameObject;
                     HighlightPossibleMoves(hit.transform.gameObject);
                 }
                 if(!isBlackTurn && objectHit.tag=="White"){
+                    temp=hit.transform.gameObject;
                     HighlightPossibleMoves(hit.transform.gameObject);
                 }
             
@@ -65,6 +68,7 @@ public class ChessPieceSelectionHandler : MonoBehaviour
 
     private void HighlightPossibleMoves(GameObject SelectedPiece){
         chessPlayerPlacementHandler=SelectedPiece.gameObject.GetComponent<ChessPlayerPlacementHandler>();
+        
         switch(chessPlayerPlacementHandler.pieceName){
             case "Black Pawn":
                 HighlightBlackPawnMoves();
@@ -88,7 +92,9 @@ public class ChessPieceSelectionHandler : MonoBehaviour
             case "King":
                 HighlightKingMoves();
                 break;
+        
         }
+        
 
     }
     void HighlightBlackPawnMoves(){
@@ -96,19 +102,39 @@ public class ChessPieceSelectionHandler : MonoBehaviour
         int currentColumn=chessPlayerPlacementHandler.column;
         //Front Highlight
         if(!isOccupiedByPlayer(currentRow+1,currentColumn) && !isOccupiedByEnemy(currentRow+1,currentColumn)){
-            Highlight(currentRow+1,currentColumn);
+            if(!CheckHandler.checkHandlerInstance.iskingincheck){
+                Highlight(currentRow+1,currentColumn);
+            }
+            else{
+                MovesRestricter(currentRow+1,currentColumn);
+            }
         }
         //Highlight if there is a enemy on the left
         if(isValidMove(currentRow+1,currentColumn-1) && isOccupiedByEnemy(currentRow+1,currentColumn-1)){
-            Highlight(currentRow+1,currentColumn-1);
+            if(!CheckHandler.checkHandlerInstance.iskingincheck){
+                Highlight(currentRow+1,currentColumn-1);
+            }
+            else{
+                MovesRestricter(currentRow+1,currentColumn-1);
+            }
         }
         //Highlight if there is a enemy on the right
         if(isValidMove(currentRow+1,currentColumn+1) && isOccupiedByEnemy(currentRow+1,currentColumn+1)){
-            Highlight(currentRow+1,currentColumn+1);
+            if(!CheckHandler.checkHandlerInstance.iskingincheck){
+                Highlight(currentRow+1,currentColumn+1);
+            }
+            else{
+                MovesRestricter(currentRow+1,currentColumn+1);
+            }
         }
         //Highlight the 2nd row too if the pawn is on the default position
         if(currentRow==1 && !isOccupiedByEnemy(currentRow+1,currentColumn) && !isOccupiedByPlayer(currentRow+1,currentColumn) && !isOccupiedByPlayer(currentRow+2,currentColumn) && !isOccupiedByEnemy(currentRow+2,currentColumn)){
-            Highlight(currentRow+2,currentColumn);
+            if(!CheckHandler.checkHandlerInstance.iskingincheck){
+                Highlight(currentRow+2,currentColumn);
+            }
+            else{
+                MovesRestricter(currentRow+2,currentColumn);
+            }
         }
         
     }
@@ -117,19 +143,39 @@ public class ChessPieceSelectionHandler : MonoBehaviour
         int currentColumn=chessPlayerPlacementHandler.column;
         //Front Highlight
         if(!isOccupiedByPlayer(currentRow-1,currentColumn) && !isOccupiedByEnemy(currentRow-1,currentColumn)){
-            Highlight(currentRow-1,currentColumn);
+            if(!CheckHandler.checkHandlerInstance.iskingincheck){
+                Highlight(currentRow-1,currentColumn);
+            }
+            else{
+                MovesRestricter(currentRow-1,currentColumn);
+            }
         }
         //Highlight if there is a enemy on the left
         if(isValidMove(currentRow-1,currentColumn-1) && isOccupiedByEnemy(currentRow-1,currentColumn-1)){
-            Highlight(currentRow-1,currentColumn-1);
+            if(!CheckHandler.checkHandlerInstance.iskingincheck){
+                Highlight(currentRow-1,currentColumn-1);
+            }
+            else{
+                MovesRestricter(currentRow-1,currentColumn-1);
+            }
         }
         //Highlight if there is a enemy on the right
         if(isValidMove(currentRow-1,currentColumn+1) && isOccupiedByEnemy(currentRow-1,currentColumn+1)){
-            Highlight(currentRow-1,currentColumn+1);
+            if(!CheckHandler.checkHandlerInstance.iskingincheck){
+                Highlight(currentRow-1,currentColumn+1);
+            }
+            else{
+                MovesRestricter(currentRow-1,currentColumn  +1);
+            }
         }
         //Highlight the 2nd row too if the pawn is on the default position
         if(currentRow==6 && !isOccupiedByEnemy(currentRow-1,currentColumn) && !isOccupiedByPlayer(currentRow-1,currentColumn) && !isOccupiedByPlayer(currentRow-2,currentColumn) && !isOccupiedByEnemy(currentRow-2,currentColumn)){
-            Highlight(currentRow-2,currentColumn);
+           if(!CheckHandler.checkHandlerInstance.iskingincheck){
+                Highlight(currentRow-2,currentColumn);
+            }
+            else{
+                MovesRestricter(currentRow-2,currentColumn);
+            }
         }
     }
 
@@ -154,17 +200,10 @@ public class ChessPieceSelectionHandler : MonoBehaviour
             for(int i=0;i<kingMoves.GetLength(0);i++){
                 int newRow=currentRow+kingMoves[i,0];
                 int newColumn=currentColumn+kingMoves[i,1];
-                if(isValidMove(newRow,newColumn)){
-                    if(!isOccupiedByPlayer(newRow,newColumn)){
-                        if(isOccupiedByEnemy(newRow,newColumn)){
-                            Highlight(newRow,newColumn);
-                            break;
-                        }
-                        else{
-                            Highlight(newRow,newColumn);
-                        }
+                if(isValidMove(newRow,newColumn) && !isOccupiedByPlayer(newRow,newColumn)){
+                    MovesRestricter(newRow,newColumn);
                     
-                    }
+                    
                 }
             }
     }
@@ -176,8 +215,11 @@ public class ChessPieceSelectionHandler : MonoBehaviour
             for(int i=0;i<knightMoves.GetLength(0);i++){
                 int newRow=currentRow+knightMoves[i,0];
                 int newColumn=currentColumn+knightMoves[i,1];
-                if(isValidMove(newRow,newColumn) && !isOccupiedByPlayer(newRow,newColumn)){
+                if(isValidMove(newRow,newColumn) && !isOccupiedByPlayer(newRow,newColumn) && !CheckHandler.checkHandlerInstance.IsKingInCheck()){
                     Highlight(newRow,newColumn);
+                }
+                if(isValidMove(newRow,newColumn) && !isOccupiedByPlayer(newRow,newColumn) && CheckHandler.checkHandlerInstance.IsKingInCheck()){
+                    MovesRestricter(newRow,newColumn);
                 }
             }
     }
@@ -191,7 +233,7 @@ public class ChessPieceSelectionHandler : MonoBehaviour
     }
 
     bool TryHighlightPosition(int row,int column){
-        if(!isOccupiedByPlayer(row,column)){
+        if(!isOccupiedByPlayer(row,column) && !CheckHandler.checkHandlerInstance.IsKingInCheck()){
             //Check if we can take the enemy pieces and highlight them
             if(ChessBoardPlacementHandler.Instance._chessPiecePosition[row,column]!=null && ChessBoardPlacementHandler.Instance._chessPiecePosition[row,column].tag==enemyTile){
                 Highlight(row,column);
@@ -199,6 +241,9 @@ public class ChessPieceSelectionHandler : MonoBehaviour
             }
             Highlight(row,column);
             return true;
+        }
+        if(!isOccupiedByPlayer(row,column) && CheckHandler.checkHandlerInstance.IsKingInCheck()){
+            MovesRestricter(row,column);
         }
         return false;
     }
@@ -220,6 +265,7 @@ public class ChessPieceSelectionHandler : MonoBehaviour
     bool isValidMove(int row,int column){
         if(row>=0 && row<8 && column>=0 && column<8){
             return true;
+            
         }
         return false;
     }
@@ -228,6 +274,40 @@ public class ChessPieceSelectionHandler : MonoBehaviour
         if(isValidMove(row,column)){
             ChessBoardPlacementHandler.Instance.Highlight(row,column);
         }
+    }
+    // void MovesRestricter(int row,int column){
+    //     int tempRow=chessPlayerPlacementHandler.row;
+    //     int tempColumn=chessPlayerPlacementHandler.column;
+    //     ChessBoardPlacementHandler.Instance._chessPiecePosition[tempRow,tempColumn]=null;
+    //     ChessBoardPlacementHandler.Instance._chessPiecePosition[row,column]=temp;
+    //     if(!CheckHandler.checkHandlerInstance.IsKingInCheck()){
+    //         Highlight(row,column);
+    //     }
+    //     ChessBoardPlacementHandler.Instance._chessPiecePosition[row,column]=null;
+    //     ChessBoardPlacementHandler.Instance._chessPiecePosition[tempRow,tempColumn]=temp;
+    // }
+    void MovesRestricter(int row, int column)
+    {
+        int tempRow = chessPlayerPlacementHandler.row;
+        int tempColumn = chessPlayerPlacementHandler.column;
+
+        // Store the original state
+        GameObject originalPiece = ChessBoardPlacementHandler.Instance._chessPiecePosition[tempRow, tempColumn];
+        GameObject movedPiece = ChessBoardPlacementHandler.Instance._chessPiecePosition[row, column];
+
+        // Simulate the move
+        ChessBoardPlacementHandler.Instance._chessPiecePosition[tempRow, tempColumn] = null;
+        ChessBoardPlacementHandler.Instance._chessPiecePosition[row, column] = temp;
+
+        // Check if the move is valid after the simulated move
+        if (!CheckHandler.checkHandlerInstance.IsKingInCheck())
+        {
+            Highlight(row, column);
+        }
+
+        // Undo the simulation
+        ChessBoardPlacementHandler.Instance._chessPiecePosition[tempRow, tempColumn] = originalPiece;
+        ChessBoardPlacementHandler.Instance._chessPiecePosition[row, column] = movedPiece;  
     }
 
     
