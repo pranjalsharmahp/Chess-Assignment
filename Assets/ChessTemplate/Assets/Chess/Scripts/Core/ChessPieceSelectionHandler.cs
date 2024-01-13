@@ -190,17 +190,14 @@ public class ChessPieceSelectionHandler : MonoBehaviour
     }
 
     bool TryHighlightPosition(int row,int column){
-        if(!isOccupiedByPlayer(row,column) && !CheckHandler.checkHandlerInstance.IsKingInCheck()){
+        if(!isOccupiedByPlayer(row,column)){
             //Check if we can take the enemy pieces and highlight them
             if(ChessBoardPlacementHandler.Instance._chessPiecePosition[row,column]!=null && ChessBoardPlacementHandler.Instance._chessPiecePosition[row,column].tag==enemyTile){
-                Highlight(row,column);
+                MovesRestricter(row,column);
                 return false;
             }
-            Highlight(row,column);
-            return true;
-        }
-        if(!isOccupiedByPlayer(row,column) && CheckHandler.checkHandlerInstance.IsKingInCheck()){
             MovesRestricter(row,column);
+            return true;
         }
         return false;
     }
