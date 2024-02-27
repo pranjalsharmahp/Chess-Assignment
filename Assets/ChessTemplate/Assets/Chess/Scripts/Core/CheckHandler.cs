@@ -11,6 +11,9 @@ public class CheckHandler : MonoBehaviour
     public ChessPieceSelectionHandler chessPieceSelectionHandler;
     public bool iskingincheck;
     internal static CheckHandler checkHandlerInstance;
+    private bool isBlackTurn;
+    public int tempRow;
+    public int tempColumn;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,12 +22,11 @@ public class CheckHandler : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update(){
         
-
     }
     public bool IsKingInCheck(){
+        isBlackTurn=ChessPieceSelectionHandler.Instance.isBlackTurn;
         GetKingLocation();
         if(CheckDirectionalMoves(0,1,"Rook","Queen") || CheckDirectionalMoves(0,-1,"Rook","Queen") || CheckDirectionalMoves(1,0,"Rook","Queen") || CheckDirectionalMoves(-1,0,"Rook","Queen")
         || CheckDirectionalMoves(1,1,"Bishop","Queen") || CheckDirectionalMoves(-1,1,"Bishop","Queen") || CheckDirectionalMoves(1,-1,"Bishop","Queen") || CheckDirectionalMoves(-1,-1,"Bishop","Queen")){
@@ -35,6 +37,9 @@ public class CheckHandler : MonoBehaviour
             return true;
         }
         if(CheckKingMoves()){
+            return true;
+        }
+        if(CheckPawnMoves()){
             return true;
         }
         return false;
@@ -104,6 +109,21 @@ public class CheckHandler : MonoBehaviour
                 }
             }
         }
+        
         return false;
     }
+    bool CheckPawnMoves(){
+        int pawnDirection = isBlackTurn ? -1 : 1;
+        for(int i = -1; i <= 1; i += 2){
+            Debug.Log("Pawn Direction "+pawnDirection);
+            tempRow = kingRow + pawnDirection;
+            tempColumn = kingColumn + i;
+            if(isValidMove(tempRow, tempColumn) && ChessBoardPlacementHandler.Instance._chessPiecePosition[tempRow, tempColumn] != null && ChessBoardPlacementHandler.Instance._chessPiecePosition[tempRow, tempColumn].name == (isBlackTurn? "White Pawn" : "Black Pawn")){
+            // Enemy pawn threatens the king
+                return true;
+            }
+        }
+        return false;
+    }
+    
 }

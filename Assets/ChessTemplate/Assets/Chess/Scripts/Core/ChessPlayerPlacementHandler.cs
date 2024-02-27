@@ -18,7 +18,7 @@ namespace Chess.Scripts.Core {
                 ChessPieceSelectionHandler.Instance.enemyTile="Black";
             }
             else{
-                ChessPieceSelectionHandler.Instance.isBlackTurn=true;
+                ChessPieceSelectionHandler.Instance.isBlackTurn=true;;
                 ChessPieceSelectionHandler.Instance.playerTile="Black";
                 ChessPieceSelectionHandler.Instance.enemyTile="White";
             }

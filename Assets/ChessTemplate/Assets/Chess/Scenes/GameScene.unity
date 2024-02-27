@@ -1713,6 +1713,8 @@ MonoBehaviour:
   kingColumn: 4
   chessPieceSelectionHandler: {fileID: 0}
   iskingincheck: 0
+  tempRow: 0
+  tempColumn: 0
 --- !u!4 &317059094
 Transform:
   m_ObjectHideFlags: 0
