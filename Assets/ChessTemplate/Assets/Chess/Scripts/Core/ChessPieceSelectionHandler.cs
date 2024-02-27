@@ -36,6 +36,7 @@ public class ChessPieceSelectionHandler : MonoBehaviour
         ray=cameraa.ScreenPointToRay(Input.mousePosition);
         if(Physics.Raycast(ray,out hit)){
             Transform objectHit=hit.transform;
+            Debug.Log(hit.transform.name+" "+playerTurn+" "+hit.transform.tag);
             if(objectHit.tag!="Highlighter"){
                 ChessBoardPlacementHandler.Instance.ClearHighlights();
                 if(isBlackTurn && objectHit.tag=="Black"){
@@ -47,17 +48,15 @@ public class ChessPieceSelectionHandler : MonoBehaviour
                     HighlightPossibleMoves(hit.transform.gameObject);
                 }
             
-                Debug.Log("hit");
             }
             if(objectHit.tag=="Highlighter"){
                 ChessBoardPlacementHandler.Instance.ClearHighlights();
                 int highlightRow=Int32.Parse(new string(objectHit.transform.parent.gameObject.transform.parent.gameObject.name[5],1)) - 1;
                 int highlightColumn=Int32.Parse(objectHit.transform.parent.gameObject.name);
                 chessPlayerPlacementHandler.ChangePosition(highlightRow,highlightColumn);
-                Debug.Log(objectHit.transform.parent.gameObject.name);
-                Debug.Log("Highlighter Hit");
-
+                
                 playerTurn++;
+                Debug.Log("Highlighter Hit "+playerTurn);
             }
             
         }
