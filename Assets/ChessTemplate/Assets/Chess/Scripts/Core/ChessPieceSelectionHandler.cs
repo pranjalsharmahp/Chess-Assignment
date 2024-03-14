@@ -15,6 +15,7 @@ public class ChessPieceSelectionHandler : MonoBehaviour
     public bool isBlackTurn;
     internal static ChessPieceSelectionHandler Instance;
     public GameObject temp;
+    public GameObject _highlightPrefab;
 
     void Start(){
         isBlackTurn=false;
@@ -25,9 +26,7 @@ public class ChessPieceSelectionHandler : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Mouse0)){
-            
             SelectPiece();
-            
         }
     }
 
@@ -47,18 +46,22 @@ public class ChessPieceSelectionHandler : MonoBehaviour
                     temp=hit.transform.gameObject;
                     HighlightPossibleMoves(hit.transform.gameObject);
                 }
-            
             }
             if(objectHit.tag=="Highlighter"){
                 ChessBoardPlacementHandler.Instance.ClearHighlights();
                 int highlightRow=Int32.Parse(new string(objectHit.transform.parent.gameObject.transform.parent.gameObject.name[5],1)) - 1;
                 int highlightColumn=Int32.Parse(objectHit.transform.parent.gameObject.name);
                 chessPlayerPlacementHandler.ChangePosition(highlightRow,highlightColumn);
-                
                 playerTurn++;
                 Debug.Log("Highlighter Hit "+playerTurn);
             }
-            
+            if(objectHit.tag=="Castling Highlighter"){
+                ChessBoardPlacementHandler.Instance.ClearHighlights();
+                int highlightRow=Int32.Parse(new string(objectHit.transform.parent.gameObject.transform.parent.gameObject.name[5],1)) - 1;
+                int highlightColumn=Int32.Parse(objectHit.transform.parent.gameObject.name);
+                chessPlayerPlacementHandler.Castle(highlightRow,highlightColumn);
+                playerTurn++;
+            }
         }
         else{
             Debug.Log("Not hit");
@@ -153,18 +156,53 @@ public class ChessPieceSelectionHandler : MonoBehaviour
     }
 
     void HighlightKingMoves(){
-            int currentRow=chessPlayerPlacementHandler.row;
-            int currentColumn=chessPlayerPlacementHandler.column;
-            int[,] kingMoves={{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}}; //All the possible moves a king can make
-            for(int i=0;i<kingMoves.GetLength(0);i++){
-                int newRow=currentRow+kingMoves[i,0];
-                int newColumn=currentColumn+kingMoves[i,1];
-                if(isValidMove(newRow,newColumn) && !isOccupiedByPlayer(newRow,newColumn)){
-                    MovesRestricter(newRow,newColumn);
-                    
-                    
-                }
+        int currentRow=chessPlayerPlacementHandler.row;
+        int currentColumn=chessPlayerPlacementHandler.column;
+        int[,] kingMoves={{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}}; //All the possible moves a king can make
+        for(int i=0;i<kingMoves.GetLength(0);i++){
+            int newRow=currentRow+kingMoves[i,0];
+            int newColumn=currentColumn+kingMoves[i,1];
+            if(isValidMove(newRow,newColumn) && !isOccupiedByPlayer(newRow,newColumn)){
+                MovesRestricter(newRow,newColumn);                
             }
+            if(!chessPlayerPlacementHandler.hasMoved){
+                if(isBlackTurn){
+                    if(!isOccupied(7,1) && !isOccupied(7,2) && !isOccupied(7,3)&&!ChessBoardPlacementHandler.Instance._chessPiecePosition[7,0].GetComponent<ChessPlayerPlacementHandler>().hasMoved){
+                        if(SimulateMove(7,2)){
+                            CastlingHighlight(7,2);
+                        }
+                        
+                    }
+                    if(!isOccupied(7,5) && !isOccupied(7,6) && !ChessBoardPlacementHandler.Instance._chessPiecePosition[7,7].GetComponent<ChessPlayerPlacementHandler>().hasMoved){
+                        if(SimulateMove(7,6)){
+                            CastlingHighlight(7,6);
+                        }
+                    }
+                }
+                else{
+                   if(!isOccupied(0,1) && !isOccupied(0,2) && !isOccupied(0,3)&& !ChessBoardPlacementHandler.Instance._chessPiecePosition[0,0].GetComponent<ChessPlayerPlacementHandler>().hasMoved){
+                        if(SimulateMove(0,2)){
+                            CastlingHighlight(0,2);
+                        }
+                    }
+                    if(!isOccupied(0,5) && !isOccupied(0,6)&&!ChessBoardPlacementHandler.Instance._chessPiecePosition[7,7].GetComponent<ChessPlayerPlacementHandler>().hasMoved){
+                        if(SimulateMove(0,6)){
+                            CastlingHighlight(0,6);
+                        }
+                    } 
+                } 
+            }
+        }
+    }
+
+    void CastlingHighlight(int row,int col){
+        var tile = ChessBoardPlacementHandler.Instance.GetTile(row, col).transform;
+        if (tile == null) {
+            Debug.LogError("Invalid row or column.");
+            return;
+        }
+
+        Instantiate(_highlightPrefab, tile.transform.position, Quaternion.identity, tile.transform);
     }
 
     void HighlightKnightMoves(){
@@ -214,6 +252,12 @@ public class ChessPieceSelectionHandler : MonoBehaviour
         }
         return false;
     }
+    bool isOccupied(int row,int column){
+        if(ChessBoardPlacementHandler.Instance._chessPiecePosition[row,column]!=null){
+            return true;
+        }
+        return false;
+    }
 
     bool isValidMove(int row,int column){
         if(row>=0 && row<8 && column>=0 && column<8){
@@ -228,17 +272,6 @@ public class ChessPieceSelectionHandler : MonoBehaviour
             ChessBoardPlacementHandler.Instance.Highlight(row,column);
         }
     }
-    // void MovesRestricter(int row,int column){
-    //     int tempRow=chessPlayerPlacementHandler.row;
-    //     int tempColumn=chessPlayerPlacementHandler.column;
-    //     ChessBoardPlacementHandler.Instance._chessPiecePosition[tempRow,tempColumn]=null;
-    //     ChessBoardPlacementHandler.Instance._chessPiecePosition[row,column]=temp;
-    //     if(!CheckHandler.checkHandlerInstance.IsKingInCheck()){
-    //         Highlight(row,column);
-    //     }
-    //     ChessBoardPlacementHandler.Instance._chessPiecePosition[row,column]=null;
-    //     ChessBoardPlacementHandler.Instance._chessPiecePosition[tempRow,tempColumn]=temp;
-    // }
     void MovesRestricter(int row, int column)
     {
         int tempRow = chessPlayerPlacementHandler.row;
@@ -261,6 +294,32 @@ public class ChessPieceSelectionHandler : MonoBehaviour
         // Undo the simulation
         ChessBoardPlacementHandler.Instance._chessPiecePosition[tempRow, tempColumn] = originalPiece;
         ChessBoardPlacementHandler.Instance._chessPiecePosition[row, column] = movedPiece;  
+    }
+    //this function is to simulate the move and if the move is valid then the function will return true
+    bool SimulateMove(int row,int column){
+        int tempRow = chessPlayerPlacementHandler.row;
+        int tempColumn = chessPlayerPlacementHandler.column;
+
+        // Store the original state
+        GameObject originalPiece = ChessBoardPlacementHandler.Instance._chessPiecePosition[tempRow, tempColumn];
+        GameObject movedPiece = ChessBoardPlacementHandler.Instance._chessPiecePosition[row, column];
+
+        // Simulate the move
+        ChessBoardPlacementHandler.Instance._chessPiecePosition[tempRow, tempColumn] = null;
+        ChessBoardPlacementHandler.Instance._chessPiecePosition[row, column] = temp;
+
+        // Check if the move is valid after the simulated move
+        if (!CheckHandler.checkHandlerInstance.IsKingInCheck())
+        {
+            ChessBoardPlacementHandler.Instance._chessPiecePosition[tempRow, tempColumn] = originalPiece;
+            ChessBoardPlacementHandler.Instance._chessPiecePosition[row, column] = movedPiece;
+            return true;
+        }
+
+        // Undo the simulation
+        ChessBoardPlacementHandler.Instance._chessPiecePosition[tempRow, tempColumn] = originalPiece;
+        ChessBoardPlacementHandler.Instance._chessPiecePosition[row, column] = movedPiece;  
+        return false;
     }
 
     

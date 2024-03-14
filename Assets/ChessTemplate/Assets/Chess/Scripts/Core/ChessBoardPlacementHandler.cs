@@ -44,6 +44,7 @@ public sealed class ChessBoardPlacementHandler : MonoBehaviour {
 
         Instantiate(_highlightPrefab, tile.transform.position, Quaternion.identity, tile.transform);
     }
+    
 
     internal void ClearHighlights() {
         for (var i = 0; i < 8; i++) {

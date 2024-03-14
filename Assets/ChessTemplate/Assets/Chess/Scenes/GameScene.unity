@@ -159,6 +159,7 @@ MonoBehaviour:
   playerTurn: 1
   isBlackTurn: 0
   temp: {fileID: 0}
+  _highlightPrefab: {fileID: 3575455442422821219, guid: 31826f4dc3a224337957c22a8545b771, type: 3}
 --- !u!4 &2040582
 Transform:
   m_ObjectHideFlags: 0
@@ -345,6 +346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 7
   column: 3
+  hasMoved: 0
   pieceName: 
 --- !u!65 &60290585
 BoxCollider:
@@ -549,6 +551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   column: 1
+  hasMoved: 0
   pieceName: 
 --- !u!212 &123462758
 SpriteRenderer:
@@ -671,6 +674,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 1
   column: 6
+  hasMoved: 0
   pieceName: 
 --- !u!212 &156174479
 SpriteRenderer:
@@ -1063,6 +1067,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   column: 3
+  hasMoved: 0
   pieceName: 
 --- !u!212 &226217133
 SpriteRenderer:
@@ -1299,6 +1304,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 7
   column: 7
+  hasMoved: 0
   pieceName: 
 --- !u!65 &280411639
 BoxCollider:
@@ -1319,7 +1325,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.2}
+  m_Size: {x: 1, y: 1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &283930264
 GameObject:
@@ -1658,6 +1664,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 6
   column: 3
+  hasMoved: 0
   pieceName: 
 --- !u!65 &309589167
 BoxCollider:
@@ -1997,6 +2004,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 7
   column: 2
+  hasMoved: 0
   pieceName: 
 --- !u!65 &354243242
 BoxCollider:
@@ -2335,6 +2343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 6
   column: 1
+  hasMoved: 0
   pieceName: 
 --- !u!212 &409402680
 SpriteRenderer:
@@ -2643,6 +2652,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 6
   column: 0
+  hasMoved: 0
   pieceName: 
 --- !u!65 &436799129
 BoxCollider:
@@ -2765,6 +2775,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 7
   column: 4
+  hasMoved: 0
   pieceName: 
 --- !u!65 &451512800
 BoxCollider:
@@ -3061,6 +3072,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 1
   column: 5
+  hasMoved: 0
   pieceName: 
 --- !u!212 &565941329
 SpriteRenderer:
@@ -3183,6 +3195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   column: 4
+  hasMoved: 0
   pieceName: 
 --- !u!212 &593394919
 SpriteRenderer:
@@ -3538,6 +3551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 7
   column: 6
+  hasMoved: 0
   pieceName: 
 --- !u!65 &755527378
 BoxCollider:
@@ -3558,7 +3572,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.2}
+  m_Size: {x: 1, y: 1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &877052905
 GameObject:
@@ -3742,6 +3756,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 1
   column: 1
+  hasMoved: 0
   pieceName: 
 --- !u!212 &920880453
 SpriteRenderer:
@@ -3916,6 +3931,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 6
   column: 7
+  hasMoved: 0
   pieceName: 
 --- !u!65 &969461839
 BoxCollider:
@@ -3986,6 +4002,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 1
   column: 3
+  hasMoved: 0
   pieceName: 
 --- !u!212 &989664550
 SpriteRenderer:
@@ -4242,6 +4259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   column: 0
+  hasMoved: 0
   pieceName: 
 --- !u!212 &1027209834
 SpriteRenderer:
@@ -4416,6 +4434,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 6
   column: 4
+  hasMoved: 0
   pieceName: 
 --- !u!65 &1126575669
 BoxCollider:
@@ -4691,6 +4710,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 1
   column: 2
+  hasMoved: 0
   pieceName: 
 --- !u!212 &1267163547
 SpriteRenderer:
@@ -4813,6 +4833,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   column: 7
+  hasMoved: 0
   pieceName: 
 --- !u!212 &1285385770
 SpriteRenderer:
@@ -4987,6 +5008,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 7
   column: 5
+  hasMoved: 0
   pieceName: 
 --- !u!65 &1285433207
 BoxCollider:
@@ -5057,6 +5079,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 1
   column: 7
+  hasMoved: 0
   pieceName: 
 --- !u!212 &1292103618
 SpriteRenderer:
@@ -5365,6 +5388,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 7
   column: 1
+  hasMoved: 0
   pieceName: 
 --- !u!65 &1342563080
 BoxCollider:
@@ -5435,6 +5459,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 1
   column: 0
+  hasMoved: 0
   pieceName: 
 --- !u!212 &1432201193
 SpriteRenderer:
@@ -5878,6 +5903,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 6
   column: 5
+  hasMoved: 0
   pieceName: 
 --- !u!65 &1486999846
 BoxCollider:
@@ -6018,6 +6044,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   column: 5
+  hasMoved: 0
   pieceName: 
 --- !u!212 &1564707973
 SpriteRenderer:
@@ -6589,6 +6616,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   column: 2
+  hasMoved: 0
   pieceName: 
 --- !u!212 &1696162398
 SpriteRenderer:
@@ -6763,6 +6791,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 6
   column: 6
+  hasMoved: 0
   pieceName: 
 --- !u!65 &1707383402
 BoxCollider:
@@ -6885,6 +6914,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 6
   column: 2
+  hasMoved: 0
   pieceName: 
 --- !u!65 &1723691869
 BoxCollider:
@@ -7089,6 +7119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 1
   column: 4
+  hasMoved: 0
   pieceName: 
 --- !u!212 &1758552468
 SpriteRenderer:
@@ -7449,6 +7480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   column: 6
+  hasMoved: 0
   pieceName: 
 --- !u!212 &1998642868
 SpriteRenderer:
@@ -7551,7 +7583,7 @@ Transform:
   m_GameObject: {fileID: 2003609496}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.617978, y: -2.9628122, z: 0.43933135}
+  m_LocalPosition: {x: -4.617978, y: -3.24, z: 0.43933135}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7623,6 +7655,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 7
   column: 0
+  hasMoved: 0
   pieceName: 
 --- !u!65 &2003609500
 BoxCollider:
@@ -7643,7 +7676,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.2}
+  m_Size: {x: 1, y: 1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2059979822
 GameObject:
