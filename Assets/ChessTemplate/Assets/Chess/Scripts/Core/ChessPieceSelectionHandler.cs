@@ -16,10 +16,14 @@ public class ChessPieceSelectionHandler : MonoBehaviour
     internal static ChessPieceSelectionHandler Instance;
     public GameObject temp;
     public GameObject _highlightPrefab;
+    public PlayerManager playerManager;
+    public int fromRow;
+    public int fromColumn;
 
     void Start(){
         isBlackTurn=false;
         Instance=this;
+        playerManager=GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
     }
 
     // Update is called once per frame
@@ -38,11 +42,11 @@ public class ChessPieceSelectionHandler : MonoBehaviour
             Debug.Log(hit.transform.name+" "+playerTurn+" "+hit.transform.tag);
             if(objectHit.tag!="Highlighter"){
                 ChessBoardPlacementHandler.Instance.ClearHighlights();
-                if(isBlackTurn && objectHit.tag=="Black"){
+                if(isBlackTurn && objectHit.tag=="Black" &&playerTile=="Black"){
                     temp=hit.transform.gameObject;
                     HighlightPossibleMoves(hit.transform.gameObject);
                 }
-                if(!isBlackTurn && objectHit.tag=="White"){
+                if(!isBlackTurn && objectHit.tag=="White" && playerTile=="White"){
                     temp=hit.transform.gameObject;
                     HighlightPossibleMoves(hit.transform.gameObject);
                 }
@@ -51,7 +55,11 @@ public class ChessPieceSelectionHandler : MonoBehaviour
                 ChessBoardPlacementHandler.Instance.ClearHighlights();
                 int highlightRow=Int32.Parse(new string(objectHit.transform.parent.gameObject.transform.parent.gameObject.name[5],1)) - 1;
                 int highlightColumn=Int32.Parse(objectHit.transform.parent.gameObject.name);
-                chessPlayerPlacementHandler.ChangePosition(highlightRow,highlightColumn);
+                fromRow=chessPlayerPlacementHandler.row;
+                fromColumn=chessPlayerPlacementHandler.column;
+                // chessPlayerPlacementHandler.ChangePosition(highlightRow,highlightColumn);
+                
+                playerManager.SendMove(fromRow,fromColumn,highlightRow,highlightColumn);
                 playerTurn++;
                 Debug.Log("Highlighter Hit "+playerTurn);
             }
