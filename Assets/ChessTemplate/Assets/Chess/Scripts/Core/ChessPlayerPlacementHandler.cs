@@ -13,9 +13,8 @@ namespace Chess.Scripts.Core {
             transform.position = ChessBoardPlacementHandler.Instance.GetTile(row, column).transform.position;
             ChessBoardPlacementHandler.Instance._chessPiecePosition[row,column]=gameObject;
             hasMoved=false;
-            if(playerManager.playerId==2){
-                gameObject.transform.rotation=Quaternion.Euler(0,0,180);
-            }
+            // Invoke("ChangePieceRotation",6.0f);
+            
         }
 
         public void ChangePosition(int newRow,int newColumn){
@@ -103,16 +102,22 @@ namespace Chess.Scripts.Core {
             }
         }
         void UpdateTurnColor(){
+            ChessPieceSelectionHandler.Instance.playerTurn++;
             if(ChessPieceSelectionHandler.Instance.playerTurn%2==0){
-                ChessPieceSelectionHandler.Instance.isBlackTurn=false;
+                ChessPieceSelectionHandler.Instance.isBlackTurn=true;
                 // ChessPieceSelectionHandler.Instance.playerTile="White";
                 // ChessPieceSelectionHandler.Instance.enemyTile="Black";
             }
             else{
-                ChessPieceSelectionHandler.Instance.isBlackTurn=true;;
+                ChessPieceSelectionHandler.Instance.isBlackTurn=false;;
                 // ChessPieceSelectionHandler.Instance.playerTile="Black";
                 // ChessPieceSelectionHandler.Instance.enemyTile="White";
             }
         }
+        // public void ChangePieceRotation(){
+        //     if(playerManager.playerId==2){
+        //         gameObject.transform.rotation=Quaternion.Euler(0,0,180);
+        //     }
+        // }
     }
 }

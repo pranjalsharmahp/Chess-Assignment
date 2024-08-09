@@ -60,15 +60,16 @@ public class ChessPieceSelectionHandler : MonoBehaviour
                 // chessPlayerPlacementHandler.ChangePosition(highlightRow,highlightColumn);
                 
                 playerManager.SendMove(fromRow,fromColumn,highlightRow,highlightColumn);
-                playerTurn++;
                 Debug.Log("Highlighter Hit "+playerTurn);
             }
             if(objectHit.tag=="Castling Highlighter"){
                 ChessBoardPlacementHandler.Instance.ClearHighlights();
+                
                 int highlightRow=Int32.Parse(new string(objectHit.transform.parent.gameObject.transform.parent.gameObject.name[5],1)) - 1;
                 int highlightColumn=Int32.Parse(objectHit.transform.parent.gameObject.name);
-                chessPlayerPlacementHandler.Castle(highlightRow,highlightColumn);
-                playerTurn++;
+                fromRow=chessPlayerPlacementHandler.row;
+                fromColumn=chessPlayerPlacementHandler.column;
+                playerManager.SendCastle(fromRow,fromColumn,highlightRow,highlightColumn);
             }
         }
         else{
